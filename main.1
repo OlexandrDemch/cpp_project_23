@@ -1,0 +1,145 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+using namespace std;
+struct Employee {
+    string surname;
+    int age;
+};
+void printEmployee(const Employee& employee) {
+    cout << "Прізвище: " << employee.surname << endl;
+    cout << "Вік: " << employee.age << endl;
+}
+vector<Employee> loadEmployeesFromFile(const string& filename) {
+    vector<Employee> employees;
+    ifstream file(filename);
+    if (file.is_open()) {
+        Employee employee;
+        while (file >> employee.surname >> employee.age) {
+            employees.push_back(employee);
+        }
+        file.close();
+    }
+    else {
+        cout << "Не вдалося відкрити файл " << filename << endl;
+    }
+    return employees;
+}
+void saveEmployeesToFile(const vector<Employee>& employees, const string& filename) {
+    ofstream file(filename);
+    if (file.is_open()) {
+        for (const Employee& employee : employees) {
+            file << employee.surname << " " << employee.age << endl;
+        }
+        file.close();
+        cout << "Список співробітників збережено у файл " << filename << endl;
+    }
+    else {
+        cout << "Не вдалося відкрити файл " << filename << " для збереження списку співробітників" << endl;
+    }
+}
+Employee enterEmployeeData() {
+    Employee employee;
+    cout << "Введіть прізвище співробітника: ";
+    cin >> employee.surname;
+    cout << "Введіть вік співробітника: ";
+    cin >> employee.age;
+    return employee;
+}
+void searchBySurname(const vector<Employee>& employees, const string& surname) {
+    bool found = false;
+    for (const Employee& employee : employees) {
+        if (employee.surname == surname) {
+            printEmployee(employee);
+            cout << endl;
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "Співробітників з прізвищем " << surname << " не знайдено" << endl;
+    }
+}
+void filterByAge(const vector<Employee>& employees, int age) {
+    bool found = false;
+    vector<Employee>& employees, int age); {
+        bool found = false;
+        for (const Employee& employee : employees) {
+            if (employee.age == age) {
+                printEmployee(employee);
+                cout << endl;
+                found = true;
+            }
+        }
+        if (!found) {
+            cout << "Співробітників віку " << age << " не знайдено" << endl;
+        }
+}
+void filterBySurnameLetter(const vector<Employee>&employees, char letter) {
+    bool found = false;
+    for (const Employee& employee : employees) {
+        if (employee.surname[0] == letter) {
+            printEmployee(employee);
+            cout << endl;
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "Співробітників з прізвищем, що починається на літеру " << letter << " не знайдено" << endl;
+    }
+}
+int main() {
+    vector<Employee> employees;
+    employees = loadEmployeesFromFile("employees.txt");
+    int choice;
+    char letter;
+    string surname;
+    do {
+        cout << "Меню:" << endl;
+        cout << "1. Введення даних про нового співробітника" << endl;
+        cout << "2. Редагування даних співробітника" << endl;
+        cout << "3. Видалення співробітника" << endl;
+        cout << "4. Пошук співробітника за прізвищем" << endl;
+        cout << "5. Вивід інформації про співробітників заданого віку" << endl;
+        cout << "6. Вивід інформації про співробітників, прізвище яких починається на задану літеру" << endl;
+        cout << "7. Збереження списку співробітників у файл" << endl;
+        cout << "8. Вихід з програми" << endl;
+        cout << "Виберіть опцію: ";
+        cin; >> choice;
+        switch (choice) {
+        case 1:
+            employees.push_back(enterEmployeeData());
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            cout << "Введіть прізвище співробітника для пошуку: ";
+            cin >> surname;
+            searchBySurname(employees, surname);
+            break;
+        case 5:
+            cout << "Введіть вік співробітників для виводу: ";
+            cin >> age;
+            filterByAge(employees, age);
+            break;
+        case 6:
+            cout << "Введіть літеру для пошуку співробітників: ";
+            cin >> letter;
+            filterBySurnameLetter(employees, letter);
+            break;
+        case 7:
+            saveEmployeesToFile(employees, "employees.txt");
+            break;
+        case 8:
+            saveEmployeesToFile(employees, "employees.txt");
+            cout << "Програма завершила роботу" << endl;
+            break;
+        default:
+            cout << "Неправильний вибір, спробуйте ще раз" << endl;
+        }
+        cout << endl;
+    } while (choice != 8);
+    return 0;
+}
